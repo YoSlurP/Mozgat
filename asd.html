@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mozgat</title>
+    <style>
+        body{background-color: tan;}
+        #jatek{
+            background-color: white;
+            padding: 10px;
+            border: solid 1px black;
+            font-size: 0pt;
+            width: 576px;height: 576px;
+            margin: 0px auto;
+        }
+        #jatek img:hover{
+            background-color: palegreen;
+        }
+        #igen{
+            text-align: center;
+        }
+        #szoveg{
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        let t=[];
+        let f= ["moveD","moveU","moveL","moveR",]
+        function start(){
+            let html =""
+            for(let i=0; i<6; i++){
+                t[i] =[]
+                for(let j=0;j<6;j++){
+                    let ran =(Math.floor(Math.random()*4))
+                    t[i][j]=f[ran];
+                    html+="<img src='"+t[i][j]+".png' onclick='katt("+i+","+j+");'id='"+i+"y"+j+"x'>"
+                }
+            }
+            document.getElementById("jatek").innerHTML=html;
+        }
+        let a=0;
+        let wincount =36;
+        function katt(s,o){
+            if(t[s][o]=="moveR"){
+                if(o==5){
+                    t[s][o]="moveX"
+                    a++;
+                    wincount--;
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                }
+                else if(t[s][o+1]=="moveX"){
+                    t[s][o+1]="moveR"
+                    t[s][o]="moveX"
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById(s+"y"+(o+1)+"x").src=t[s][o+1]+".png";
+                }else{
+                    t[s][o]=t[s][o+1];
+                    t[s][o+1]="moveR";
+                    a--
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById(s+"y"+(o+1)+"x").src=t[s][o+1]+".png";
+                }
+            }
+
+
+            else if(t[s][o]=="moveU"){
+                if(s==0){    
+                    t[s][o]="moveX"
+                    a++;
+                    wincount--;
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                }
+                else if(t[s-1][o]=="moveX"){
+                    t[s-1][o]="moveU"
+                    t[s][o]="moveX"
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById((s-1)+"y"+o+"x").src=t[s-1][o]+".png";
+                }else{  
+                    t[s][o]=t[s-1][o];
+                    t[s-1][o]="moveU";
+                    a--;
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById((s-1)+"y"+o+"x").src=t[s-1][o]+".png";
+                }
+            }
+
+
+            else if(t[s][o]=="moveL"){
+                if(o==0){
+                    t[s][o]="moveX"
+                    a++;
+                    wincount--;
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                }
+                else if(t[s][o-1]=="moveX"){
+                    t[s][o-1]="moveL"
+                    t[s][o]="moveX"
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById(s+"y"+(o-1)+"x").src=t[s][o-1]+".png";
+                }else{
+                    t[s][o]=t[s][o-1];
+                    t[s][o-1]="moveL";
+                    a--;
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById(s+"y"+(o-1)+"x").src=t[s][o-1]+".png";
+                }
+            }
+
+
+            else if(t[s][o]=="moveD"){
+                if(s==5){
+                    t[s][o]="moveX"
+                    a++;
+                    wincount--;
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                }
+                else if(t[s+1][o]=="moveX"){
+                    t[s+1][o]="moveD"
+                    t[s][o]="moveX"
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById((s+1)+"y"+o+"x").src=t[s+1][o]+".png";
+                }else{
+                    t[s][o]=t[s+1][o];
+                    t[s+1][o]="moveD";
+                    a--;
+                    document.getElementById(s+"y"+o+"x").src=t[s][o]+".png";
+                    document.getElementById((s+1)+"y"+o+"x").src=t[s+1][o]+".png";
+                }
+            }
+            kiir();
+            win();
+            
+        }
+        function kiir(){
+            document.getElementById("szoveg").innerHTML="Pontszám: "+a
+        }
+        function win(){
+            if(wincount==0){
+                alert("Győztél");
+                start();
+            }
+        }
+    </script>
+</head>
+<body onload="start();">
+    <div id="jatek"></div>
+    <div id="igen"><p id="szoveg">Pontszám: 0</p></div>
+</body>
+</html>
